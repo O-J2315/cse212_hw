@@ -7,6 +7,8 @@ public class PriorityQueueTests
     [TestMethod]
     // Scenario: Enqueue 3 items with priorities 1, 2, 3 and dequeue them
     // Expected Result: Items come out in order C, B, A
+    // Defect(s) Found: The loop inside the dequeue was ending too soon becasue it was using Count-1
+    // The Code was not removing the dequeued item from the list.
     public void TestPriorityQueue_1()
     {
         var priorityQueue = new PriorityQueue();
