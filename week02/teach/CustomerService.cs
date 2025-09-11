@@ -1,4 +1,7 @@
-﻿/// <summary>
+﻿using System.ComponentModel;
+
+
+/// <summary>
 /// Maintain a Customer Service Queue.  Allows new customers to be 
 /// added and allows customers to be serviced.
 /// </summary>
@@ -11,18 +14,30 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: We add two customers when the max size is one
+        // Expected Result: One customer is added, the second attempt gives an error message
         Console.WriteLine("Test 1");
 
-        // Defect(s) Found: 
+        var cs = new CustomerService(1);
+        cs.AddNewCustomer();
+        Console.WriteLine("________________");
+        // cs.AddNewCustomer();
+        Console.WriteLine("________________");
+        // cs.AddNewCustomer(); // Should get a message about max size
+
+
+        // Defect(s) Found: the queue size was not being checked correctly using a < instead of <=
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: We serve two customers when there is only one in the queue
+        // Expected Result: One customer is served, the second attempt gives an error message
         Console.WriteLine("Test 2");
+
+        cs.ServeCustomer();
+        Console.WriteLine("________________");
+        cs.ServeCustomer(); // Should get an error about no customers
 
         // Defect(s) Found: 
 
@@ -67,7 +82,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +103,16 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
-        var customer = _queue[0];
-        Console.WriteLine(customer);
+        try
+        {
+            var customer = _queue[0];
+            _queue.RemoveAt(0);
+            Console.WriteLine(customer);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            Console.WriteLine("No Customers in Queue.");
+        }
     }
 
     /// <summary>
