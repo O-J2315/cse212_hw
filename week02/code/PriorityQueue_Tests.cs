@@ -7,8 +7,6 @@ public class PriorityQueueTests
     [TestMethod]
     // Scenario: Enqueue 3 items with priorities 1, 2, 3 and dequeue them
     // Expected Result: Items come out in order C, B, A
-    // Defect(s) Found: Queue will not erase the item that was dequeued. 
-    // Loop through the dequeue process was ending too soon.
     public void TestPriorityQueue_1()
     {
         var priorityQueue = new PriorityQueue();
@@ -19,7 +17,7 @@ public class PriorityQueueTests
 
         var actual = new List<string>();
 
-        for (; ; )
+        while (true)
         {
             try
             {
@@ -38,9 +36,29 @@ public class PriorityQueueTests
     }
 
     [TestMethod]
+    // Scenario: Enqueue multiple items with the same highest priority
+    // Expected Result: Items with same priority dequeued in FIFO order
+    // Erros: The loop inside the dequeue was doing a comparison with >= instead of >
+    public void TestPriorityQueue_SamePriorityFIFO()
+    {
+        var priorityQueue = new PriorityQueue();
+
+        priorityQueue.Enqueue("X", 5);
+        priorityQueue.Enqueue("Y", 5);
+        priorityQueue.Enqueue("Z", 3);
+
+        var first = priorityQueue.Dequeue();
+        var second = priorityQueue.Dequeue();
+        var third = priorityQueue.Dequeue();
+
+        Assert.AreEqual("X", first);
+        Assert.AreEqual("Y", second);
+        Assert.AreEqual("Z", third);
+    }
+
+    [TestMethod]
     // Scenario: Enqueue single item and dequeue it
     // Expected Result: Dequeue returns "X"
-    // Defect(s) Not Found
     public void TestPriorityQueue_2()
     {
         var priorityQueue = new PriorityQueue();
@@ -54,14 +72,16 @@ public class PriorityQueueTests
 
     [TestMethod]
     // Scenario: Dequeue from an empty queue
-    // Expected Result: Should throw InvalidOperationException
+    // Expected Result: Should throw InvalidOperationException with specific message
     public void TestPriorityQueue_Empty()
     {
         var priorityQueue = new PriorityQueue();
 
-        Assert.ThrowsException<InvalidOperationException>(() =>
+        var ex = Assert.ThrowsException<InvalidOperationException>(() =>
         {
             priorityQueue.Dequeue();
         });
+
+        Assert.AreEqual("The queue is empty.", ex.Message);
     }
 }
