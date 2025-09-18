@@ -44,3 +44,26 @@ public class TranslatorSolution
         return newWord;
     }
 }
+
+public class Program
+{
+    static void Main(string[] args)
+    {
+        stringduplicated.Run();
+    }
+
+    static char stringduplicated(string word)
+    {
+        HashSet<char> chars = new HashSet<char>();
+
+        foreach (char c in word)
+        {
+            if (chars.Contains(c))
+            {
+                return c;
+            }
+            chars.Add(c);
+        }
+        return '\0'; // No duplicate found
+    }
+ }
