@@ -190,10 +190,10 @@ public static class Recursion
 
         currPath.Add((x, y));
 
-        SolveMaze(results, maze, x + 1, y, currPath); // Move Right
-        SolveMaze(results, maze, x - 1, y, currPath); // Move
-        SolveMaze(results, maze, x, y + 1, currPath); // Move Down
-        SolveMaze(results, maze, x, y - 1, currPath); // Move
+        SolveMaze(results, maze, x + 1, y, currPath);
+        SolveMaze(results, maze, x - 1, y, currPath); 
+        SolveMaze(results, maze, x, y + 1, currPath); 
+        SolveMaze(results, maze, x, y - 1, currPath); 
 
         currPath.RemoveAt(currPath.Count - 1);
 
